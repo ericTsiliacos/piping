@@ -1,18 +1,9 @@
-var Deferred = require('deferred-js');
-
-var Promise = function(value) {
-  this.deferred = new Deferred();
-  this.then = this.deferred.then;
-  this.resolve = this.deferred.resolve;
-  this.resolveWith = this.deferred.resolveWith;
-
-  if (value !== undefined) this.deferred.resolve(value);
-};
-
 var fs   = require('fs'),
     url  = require('url'),
     http = require('http'),
     sys  = require('sys');
+
+var Promise = require('./promise');
 
 var pipe = function(x, functions) {
   for (var i = 0, n = functions.length; i < n; i++) {
@@ -35,10 +26,14 @@ var bind = function(input, f) {
   return output;
 };
 
-var lift = function(f) {
+var compose = function(f, g) {
   return function(x) {
-    return unit(f(x));
+    return f(g(x));
   };
+};
+
+var lift = function(f) {
+  return compose(unit, f);
 };
 
 var readFile = function(path) {
@@ -81,12 +76,15 @@ var print = function(string) {
   return new Promise(sys.puts(string));
 };
 
-// var doSomeWork = function(string) { return string + " do you even lift bro?" };
+var someComputation = function(string) { return string + " added words to the incomging string" };
 
-pipe(unit('urls.json'),
+/* pipe(unit('urls.json'),
      [readFile,
        getUrl,
        httpGet,
        responseBody,
        print]
     );
+*/
+
+pipe(unit('cool'), [lift(someComputation), print]);
