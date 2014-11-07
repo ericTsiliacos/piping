@@ -78,7 +78,10 @@ var print = function(string) {
 
 var someComputation = function(string) { return string + " added words to the incomging string" };
 
-/* pipe(unit('urls.json'),
+var moreComputation = function(string) { return string + " and more computation" };
+
+/*
+pipe(unit('urls.json'),
      [readFile,
        getUrl,
        httpGet,
@@ -87,4 +90,4 @@ var someComputation = function(string) { return string + " added words to the in
     );
 */
 
-pipe(unit('cool'), [lift(someComputation), print]);
+pipe(unit('cool'), [lift(someComputation), lift(moreComputation), print]);
