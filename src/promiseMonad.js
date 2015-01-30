@@ -90,4 +90,4 @@ pipe(unit('urls.json'),
     );
 */
 
-pipe(unit('cool'), [lift(someComputation), lift(moreComputation), print]);
+pipe(unit('yay'), [lift(someComputation), lift(moreComputation), print]);
